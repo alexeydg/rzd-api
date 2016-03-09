@@ -1,0 +1,14 @@
+{
+    "name": "visavi/rzd",
+    "description": "rzd api",
+    "authors": [
+        {
+            "name": "visavi",
+            "email": "visavi.net@mail.ru"
+        }
+    ],
+    "license": "mit",
+    "require": {
+        "php-curl-class/php-curl-class": "^4.11"
+    }
+}
