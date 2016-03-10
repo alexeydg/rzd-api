@@ -6,7 +6,8 @@ use \Curl\Curl;
 //https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&dir=0&tfl=3&checkSeats=1&code0={{code_from}}&dt0={{date}}&code1={{code_to}}&dt1={{date}}
 $i = 0;
 $rid = null;
-
+$cookie_file = 'cookie.txt';
+$cookie_data = null;
 do {
 
     $i++;
@@ -14,7 +15,7 @@ do {
     //$curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
 
     $session = (!empty($rid)) ? ['rid' => $rid] : [];
-    var_dump($session);
+    var_dump($session, $cookie_data);
 
     $curl->post('https://pass.rzd.ru/timetable/public/ru', array(
         'STRUCTURE_ID' => 735,
@@ -28,10 +29,20 @@ do {
     ) + $session);
 
 
+    if (!empty($cookie_data)){
+        foreach ($cookie_data as $key=>$value){
+            $curl->setCookie($key, $value);
+        }
+    }
+
+/*    file_put_contents($cookie_file, $cookie_data);*/
+/*
+    $curl->setCookieFile($cookie_file);
+    $curl->setCookieJar($cookie_file);*/
     $json = json_decode($curl->response, true);
 
     if (is_null($json)) {
-        throw new \Exception('Не валидный json');
+        throw new \Exception('Невалидный json');
     }
 
     $result = $json['result'];
@@ -40,12 +51,15 @@ do {
     switch ($result) {
         case 'RID':
             $rid = $json['rid'];
+            $cookie_data = $curl->getResponseCookies();
             sleep(2);
             break;
         case 'OK':
-            var_dump($json);
+            var_dump($result, $json);
+            $curl->close();
             break;
         default:
+             $curl->close();
             throw new \Exception('Ошибка: '.$json['message']);
     }
     # code...
