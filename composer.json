@@ -1,14 +1,26 @@
 {
-    "name": "visavi/rzd",
+    "name": "visavi/rzd-api",
     "description": "rzd api",
+    "homepage": "http://visavi.net",
+    "license": "MIT",
     "authors": [
         {
-            "name": "visavi",
-            "email": "visavi.net@mail.ru"
+            "name": "Alexander Grigorev",
+            "email": "visavi.net@mail.ru",
+            "homepage": "http://visavi.net"
         }
     ],
+    "require": {
+        "php": ">=5.6"
+    },
     "license": "mit",
     "require": {
         "php-curl-class/php-curl-class": "^4.11"
+    },
+    "autoload": {
+        "classmap": [
+            "Api.php",
+            "Query.php"
+        ]
     }
 }
