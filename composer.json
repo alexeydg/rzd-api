@@ -11,11 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=5.6"
-    },
-    "license": "mit",
-    "require": {
-        "php-curl-class/php-curl-class": "^4.11"
+        "php": ">=5.6",
+        "php-curl-class/php-curl-class": "^4.11",
+        "olamedia/nokogiri": "dev-master"
     },
     "autoload": {
         "classmap": [
