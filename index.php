@@ -3,6 +3,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 $api = new Api();
 
+// В одну сторону
 $params = [
 	'STRUCTURE_ID' => 735,
 	'layer_id' => 5371,
@@ -18,6 +19,19 @@ $params = [
 var_dump($api->freeSeats($params));
 
 
+// туда-обратно
+$params = [
+	'STRUCTURE_ID' => 735,
+	'layer_id' => 5371,
+	'dir' => 1,
+	'tfl' => 3,
+	'checkSeats' => 1,
+	'code0' => '2004000',
+	'code1' => '2060600',
+	'dt0' => '27.03.2016',
+	'dt1' => '30.03.2016',
+];
+var_dump($api->freeSeatsReturn($params));
 
 exit;
 
