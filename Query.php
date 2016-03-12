@@ -2,50 +2,46 @@
 
 class Query {
 
+	/**
+	 * Запрос на получение данных
+	 * @param  string $path   путь к странице
+	 * @param  array $params  массив параметров
+	 * @return array          массив данных
+	 */
 	public function run($path, $params) {
-		$attempts = 0;
 
 		do {
+			$curl = new \Curl\Curl();
 
-		    $attempts++;
-		    $curl = new \Curl\Curl();
+			if (!empty($cookies) && !empty($session)){
+				foreach ($cookies as $key=>$value){
+					$curl->setCookie($key, $value);
+				}
 
-		    $session = (!empty($rid)) ? ['rid' => $rid] : [];
+				$params += ['rid' => $session];
+			}
 
-		    if (!empty($cookie_data)){
-		        foreach ($cookie_data as $key=>$value){
-		            $curl->setCookie($key, $value);
-		        }
-		    }
+			$curl->post($path, $params);
 
-		    $curl->post($path, $params + $session);
+			$json = json_decode($curl->response, true);
 
-		    $json = json_decode($curl->response, true);
+			if (is_null($json)) throw new \Exception('Ошибка: Невалидный json');
 
-		    if (is_null($json)) {
-		        throw new \Exception('Невалидный json');
-		    }
+			switch ($json['result']) {
+				case 'RID':
+					$session = $json['rid'];
+					$cookies = $curl->getResponseCookies();
+					sleep(1);
+					break;
+				case 'OK':
+					$curl->close();
+					return $json;
+					break;
+				default:
+					$curl->close();
+					throw new \Exception('Ошибка: '.$json['message']);
+			}
 
-		    $result = $json['result'];
-
-		    switch ($result) {
-		        case 'RID':
-		        	// Вынести в singleton
-		        	var_dump('connect');
-		            $rid = $json['rid'];
-		            $cookie_data = $curl->getResponseCookies();
-		            sleep(2);
-		            break;
-		        case 'OK':
-		            $curl->close();
-		            return $json;
-		            break;
-		        default:
-		             $curl->close();
-		            throw new \Exception('Ошибка: '.$json['message']);
-		    }
-
-		} while ($result != 'OK' && $attempts < 5);
+		} while (true);
 	}
 }
-

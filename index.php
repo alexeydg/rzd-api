@@ -3,7 +3,6 @@ require __DIR__ . '/vendor/autoload.php';
 
 $api = new Api();
 
-
 $params = [
 	'STRUCTURE_ID' => 735,
 	'layer_id' => 5371,
@@ -16,15 +15,7 @@ $params = [
 ];
 
 
-var_dump($api->mesta($params));
-
-
-var_dump($api->mesta($params));
-
-
-
-
-
+var_dump($api->freeSeats($params));
 
 
 
