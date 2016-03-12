@@ -32,5 +32,17 @@ class Api {
 		$seats = $this->query->run($this->path, $params);
 		return [$seats['tp'][0]['list'], $seats['tp'][1]['list']];
 	}
+
+	/**
+	 * Получение числа свободных мест туда-обратно
+	 * @param  array $params массив параметров
+	 * @return array         список мест
+	 */
+	public function freeSeats2(array $params) {
+
+		// TODO: Сделать более структурный вывод в виде таблиц
+		$seats = $this->query->run($this->path, $params);
+		return $seats;
+	}
 }
 

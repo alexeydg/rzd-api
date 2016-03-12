@@ -20,7 +20,7 @@ var_dump($api->freeSeats($params));
 
 
 // туда-обратно
-$params = [
+/*$params = [
 	'STRUCTURE_ID' => 735,
 	'layer_id' => 5371,
 	'dir' => 1,
@@ -32,7 +32,21 @@ $params = [
 	'dt1' => '30.03.2016',
 ];
 var_dump($api->freeSeatsReturn($params));
+*/
 
+
+/*$params = [
+	'STRUCTURE_ID' => 735,
+	'layer_id' => 5373,
+	'dir' => 0,
+	'code0' => '2004000',
+	'code1' => '2060600',
+	'dt0' => '27.03.2016',
+	'time0' => '13:43',
+	'tnum0' => '',
+];
+
+var_dump($api->freeSeats2($params));*/
 exit;
 
 
