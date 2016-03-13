@@ -35,9 +35,9 @@ class Auth {
 	 * @param  string $path адрес страницы
 	 * @return string       html-код страницы
 	 */
-	public function getPage($path)
+	public function page($path, array $params = [])
 	{
-		$query = $this->query->send($path);
+		$query = $this->query->send($path, $params);
 
 		return $query->response;
 	}
@@ -48,10 +48,41 @@ class Auth {
 	 */
 	public function getProfile()
 	{
-		$profile = $this->getPage($this->profilePath);
+		$profile = $this->page($this->profilePath);
 
 		$saw = new nokogiri($profile);
 
-		return $saw->get('table.profileTable input')->toArray();
+		// Здесь чуть не доработано, селекты нужно отдельно парсить
+		$dataProfile = $saw->get('form.selfcareForm input')->toArray();
+
+		$profile = [];
+
+		// Игнорируем ненужные поля
+		$ignoreName = ['userpassword', 'userpassword_CONFIRM', 'DATA'];
+
+		foreach($dataProfile as $data) {
+
+			if (empty($data['name']) || in_array($data['name'], $ignoreName)) continue;
+
+			$profile[$data['name']] = isset($data['value']) ? $data['value'] : '';
+		}
+
+		return $profile;
+	}
+
+	/**
+	 * Сохранение
+	 * @param  array $data данные профиля
+	 * @return boolean     результат сохраниения
+	 */
+	public function setProfile($data)
+	{
+		$profile = $this->page($this->profilePath, $data);
+
+		$saw = new nokogiri($profile);
+
+		$result = $saw->get('.warningBlock')->toText();
+
+		return $result == 'Профиль пользователя успешно изменен' ? true : false;
 	}
 }

@@ -7,10 +7,12 @@ $username = '';
 $password = '';
 
 // Проверка авторизации
-echo $auth->login($username, $password) ? 'Пользователь '.$username.' авторизован' : 'Не удалось авторизоваться';
-
+var_dump($auth->login($username, $password) ? 'Пользователь '.$username.' авторизован' : 'Не удалось авторизоваться');
 
 // Получаем массив данных из профиля
-$profile = $auth->getProfile();
+$dataProfile = $auth->getProfile();
 
-var_dump($profile);
+// Меняем к примеру отчество
+$replaceData = ['MIDDLE_NAME'=> 'Васильевич', 'ACCEPT_POST_FLAG' => 1, 'GENDER_ID' =>2, 'QUESTION_ID' => 1];
+
+var_dump($auth->setProfile(array_merge($dataProfile, $replaceData)) ? 'Профиль сохранен' : 'Ошибка сохранения профиля');

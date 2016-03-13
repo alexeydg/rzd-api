@@ -52,7 +52,12 @@ class Query {
 		} while (true);
 	}
 
-
+	/**
+	 * Отправка и получение данных
+	 * @param  string $path   путь к сайту
+	 * @param  array  $params массив данных если необходимы параметры
+	 * @return string         данные страницы в json формате
+	 */
 	public function send($path, array $params = [])
 	{
 		$curl = new \Curl\Curl();

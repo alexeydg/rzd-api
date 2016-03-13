@@ -60,6 +60,11 @@ class Api {
 		return ['cars' => $routes['lst'][0]['cars'], 'schemes' => $routes['schemes'], 'companies' => $routes['insuranceCompany']];
 	}
 
+	/**
+	 * Получение списка станций
+	 * @param  array  $params массив параметров
+	 * @return array          список станций
+	 */
 	public function trainStationList(array $params)
 	{
 		$this->path = str_replace('https://', 'http://', $this->path); // Fix

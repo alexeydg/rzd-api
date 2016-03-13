@@ -12,10 +12,7 @@ $params = [
 	'code1' => '2060600',
 	'dt0' => '13.03.2016',
 ];
-
-
-//var_dump($api->trainRoutes($params));
-
+var_dump($api->trainRoutes($params));
 
 // Выбор маршрута туда-обратно
 $params = [
@@ -27,8 +24,7 @@ $params = [
 	'dt0' => '27.03.2016',
 	'dt1' => '30.03.2016',
 ];
-//var_dump($api->trainRoutesReturn($params));
-
+var_dump($api->trainRoutesReturn($params));
 
 // Выбор вагонов
 $params = [
@@ -39,15 +35,11 @@ $params = [
 	'time0' => '15:30',
 	'tnum0' => '074Е',
 ];
-
-//var_dump($api->trainCarriages($params));
-
-
+var_dump($api->trainCarriages($params));
 
 // Выбор вагонов
 $params = [
 	'train_num' => '072Е',
 	'date' => '13.03.2016',
 ];
-
-//var_dump($api->trainStationList($params));
+var_dump($api->trainStationList($params));
