@@ -3,10 +3,8 @@ require __DIR__ . '/vendor/autoload.php';
 
 $api = new Api();
 
-// В одну сторону
+// Выбор маршрута в одну сторону
 $params = [
-	'STRUCTURE_ID' => 735,
-	'layer_id' => 5371,
 	'dir' => 0,
 	'tfl' => 3,
 	'checkSeats' => 1,
@@ -16,13 +14,11 @@ $params = [
 ];
 
 
-var_dump($api->freeSeats($params));
+//var_dump($api->trainRoutes($params));
 
 
-// туда-обратно
-/*$params = [
-	'STRUCTURE_ID' => 735,
-	'layer_id' => 5371,
+// Выбор маршрута туда-обратно
+$params = [
 	'dir' => 1,
 	'tfl' => 3,
 	'checkSeats' => 1,
@@ -31,22 +27,20 @@ var_dump($api->freeSeats($params));
 	'dt0' => '27.03.2016',
 	'dt1' => '30.03.2016',
 ];
-var_dump($api->freeSeatsReturn($params));
-*/
+//var_dump($api->trainRoutesReturn($params));
 
 
-/*$params = [
-	'STRUCTURE_ID' => 735,
-	'layer_id' => 5373,
+// Выбор вагонов
+$params = [
 	'dir' => 0,
 	'code0' => '2004000',
 	'code1' => '2060600',
-	'dt0' => '27.03.2016',
-	'time0' => '13:43',
-	'tnum0' => '',
+	'dt0' => '13.03.2016',
+	'time0' => '15:30',
+	'tnum0' => '074Е',
 ];
 
-var_dump($api->freeSeats2($params));*/
+var_dump($api->trainCarriages($params));
 exit;
 
 

@@ -8,8 +8,8 @@ class Query {
 	 * @param  array $params  массив параметров
 	 * @return array          массив данных
 	 */
-	public function run($path, $params) {
-
+	public function run($path, $params)
+	{
 		do {
 			$curl = new \Curl\Curl();
 
@@ -29,7 +29,7 @@ class Query {
 
 			switch ($json['result']) {
 				case 'RID':
-					$session = $json['rid'];
+					$session = $this->getRid($json);
 					$cookies = $curl->getResponseCookies();
 					sleep(1);
 					break;
@@ -43,5 +43,21 @@ class Query {
 			}
 
 		} while (true);
+	}
+
+	/**
+	 * Получение уникального ключа RID
+	 * @param  string $json данные
+	 * @return string       уникальный ключ
+	 */
+	protected function getRid($json)
+	{
+		foreach (['rid', 'RID'] as $rid){
+			if (isset($json[$rid])) {
+				return $json[$rid];
+			}
+		}
+
+		throw new \Exception('Ошибка: Не найден уникальный ключ');
 	}
 }

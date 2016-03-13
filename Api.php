@@ -13,11 +13,16 @@ class Api {
 	 * @param  array $params массив параметров
 	 * @return array         список мест
 	 */
-	public function freeSeats(array $params) {
+	public function trainRoutes(array $params)
+	{
+		$layer = [
+			'STRUCTURE_ID' => 735,
+			'layer_id' => 5371,
+		];
 
 		// TODO: Сделать более структурный вывод в виде таблиц
-		$seats = $this->query->run($this->path, $params);
-		return $seats['tp'][0]['list'];
+		$routes = $this->query->run($this->path, $layer + $params);
+		return $routes['tp'][0]['list'];
 	}
 
 
@@ -26,23 +31,33 @@ class Api {
 	 * @param  array $params массив параметров
 	 * @return array         список мест
 	 */
-	public function freeSeatsReturn(array $params) {
+	public function trainRoutesReturn(array $params)
+	{
+		$layer = [
+			'STRUCTURE_ID' => 735,
+			'layer_id' => 5371,
+		];
 
 		// TODO: Сделать более структурный вывод в виде таблиц
-		$seats = $this->query->run($this->path, $params);
-		return [$seats['tp'][0]['list'], $seats['tp'][1]['list']];
+		$routes = $this->query->run($this->path, $layer + $params);
+		return [$routes['tp'][0]['list'], $routes['tp'][1]['list']];
 	}
 
 	/**
-	 * Получение числа свободных мест туда-обратно
+	 * Получение списка вагонов
 	 * @param  array $params массив параметров
 	 * @return array         список мест
 	 */
-	public function freeSeats2(array $params) {
+	public function trainCarriages(array $params)
+	{
+		$layer = [
+			'STRUCTURE_ID' => 735,
+			'layer_id' => 5373,
+		];
 
 		// TODO: Сделать более структурный вывод в виде таблиц
-		$seats = $this->query->run($this->path, $params);
-		return $seats;
+		$routes = $this->query->run($this->path, $layer + $params);
+		return ['cars' => $routes['lst'][0]['cars'], 'schemes' => $routes['schemes'], 'companies' => $routes['insuranceCompany']];
 	}
 }
 
