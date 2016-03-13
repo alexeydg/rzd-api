@@ -51,6 +51,19 @@ class Query {
 		} while (true);
 	}
 
+
+	public function get($path, $params)
+	{
+		$curl = new \Curl\Curl();
+
+		$curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
+		$curl->setCookieFile('cookie.txt');
+		$curl->setCookieJar('cookie.txt');
+		$curl->post($path, $params);
+
+		return [$curl->response, $curl->requestHeaders, $curl->responseHeaders];
+	}
+
 	/**
 	 * Получение уникального ключа RID
 	 * @param  string $json данные

@@ -18,7 +18,8 @@
     "autoload": {
         "classmap": [
             "Api.php",
-            "Query.php"
+            "Query.php",
+            "Auth.php"
         ]
     }
 }

@@ -157,7 +157,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 
 
 
-### trainStationList - получени список всех станций в текущем маршруте движения
+### trainStationList - получение списка всех станций в текущем маршруте движения
 ![Станции](https://github.com/visavi/rzd-api/blob/master/screens/trainStationList.png)
 
 Пример запроса http://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5451&train_num=072%D0%95&date=13.03.2016
