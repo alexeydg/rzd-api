@@ -10,7 +10,7 @@ $params = [
 	'checkSeats' => 1,
 	'code0' => '2004000',
 	'code1' => '2060600',
-	'dt0' => '27.03.2016',
+	'dt0' => '13.03.2016',
 ];
 
 
@@ -40,7 +40,17 @@ $params = [
 	'tnum0' => '074Е',
 ];
 
-var_dump($api->trainCarriages($params));
+//var_dump($api->trainCarriages($params));
+
+
+
+// Выбор вагонов
+$params = [
+	'train_num' => '072Е',
+	'date' => '13.03.2016',
+];
+
+var_dump($api->trainStationList($params));
 exit;
 
 

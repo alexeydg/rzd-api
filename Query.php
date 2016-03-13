@@ -23,23 +23,29 @@ class Query {
 
 			$curl->post($path, $params);
 
-			$json = json_decode($curl->response, true);
+			if ($this->isJson($curl->response)) {
+				$response = json_decode($curl->response, true);
+				$result = $json['result'];
+			} else {
+				$response = (array)$curl->response;
+				$result = (isset($response['type']) && $response['type'] == 'REQUEST_ID') ? 'RID' : 'OK';
+			}
 
-			if (is_null($json)) throw new \Exception('Ошибка: Невалидный json');
+			if (is_null($response)) throw new \Exception('Ошибка: Не удалось получить данные');
 
-			switch ($json['result']) {
+			switch ($result) {
 				case 'RID':
-					$session = $this->getRid($json);
+					$session = $this->getRid($response);
 					$cookies = $curl->getResponseCookies();
 					sleep(1);
 					break;
 				case 'OK':
 					$curl->close();
-					return $json;
+					return $response;
 					break;
 				default:
 					$curl->close();
-					throw new \Exception('Ошибка: '.$json['message']);
+					throw new \Exception('Ошибка: '.isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
 			}
 
 		} while (true);
@@ -59,5 +65,16 @@ class Query {
 		}
 
 		throw new \Exception('Ошибка: Не найден уникальный ключ');
+	}
+
+	/**
+	 * Проверка является ли строка валидным json-объектом
+	 * @param  string  $string проверяемая строка
+	 * @return boolean         результат проверки
+	 */
+	protected function isJson($string)
+	{
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
 	}
 }

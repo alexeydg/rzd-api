@@ -59,5 +59,19 @@ class Api {
 		$routes = $this->query->run($this->path, $layer + $params);
 		return ['cars' => $routes['lst'][0]['cars'], 'schemes' => $routes['schemes'], 'companies' => $routes['insuranceCompany']];
 	}
+
+	public function trainStationList(array $params)
+	{
+		$this->path = str_replace('https://', 'http://', $this->path); // Fix
+
+		$layer = [
+			'STRUCTURE_ID' => 735,
+			'layer_id' => 5451,
+		];
+
+		// TODO: Сделать более структурный вывод в виде таблиц
+		$routes = $this->query->run($this->path, $layer + $params);
+		return ['train' => $routes['Train'], 'routes' => $routes['Routes']];
+	}
 }
 

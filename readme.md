@@ -17,7 +17,7 @@
 
 
 Допустимые запросы через Curl (POST и GET)
-Для обхода защиты сайта необходимо предварительно отправить запрос для получения cookies и номера идентификатора RID
+Для обхода защиты сайта необходимо предварительно отправить запрос для получения cookies и номера идентификатора RID (REQUEST_ID)
 Вторым запросом подставляем уникальный идентификатор RID и отправляем cookie
 
 ###Ответы с сайта
@@ -39,6 +39,7 @@ OK - получен полный ответ с запрошенными нами
 Где подкатегория это
 * 5371 - выбор маршрута (Получения списка поездов)
 * 5373 - детальная информация  выбранному по поезду
+* 5451 - просмотр маршрута со всеми остановками (Формат получения RID и самих данных XML, Через незащищенный протокол http)
 
 ###Первый запрос
 https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&dir=0&tfl=3&checkSeats=1&code0={{code_from}}&dt0={{date}}&code1={{code_to}}&dt1={{date}}
@@ -83,18 +84,19 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 * date0 - дата прибытия
 * time0 - время отправления
 * time1 - время прибытия
-* varPrice -
 * route0 - код станции отправления С-ПЕТ-ЛАД
 * route1 - код станции прибития ТЮМЕНЬ
 * number - номер поезда
 * timeInWay - время в пути
+* brand - Название поезда (Демидовский экспресс)
+* carrier - тип поезда ФПК (Фирменный)
 
 * cars - массив свободных мест купе, плацкарт и люкс
-* cars.freeSeats
+* cars.freeSeats - кол.  свободных мест
 * cars.itype
 * cars.servCls
 * cars.tariff - стоимость билета
-* cars.pt
+* cars.pt - баллы
 * cars.typeLoc - полное наименование (Плацкартный, СВ, Купе, Люкс)
 * cars.type - сокращенное наименование (Купе, плац, люкс)
 
@@ -102,7 +104,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 * tnum0 - номер поезда
 
 ###trainRoutesReturn - получает маршруты поездов, количество свободных мест, цены итд, туда-обратно
-![Маршруты](https://github.com/visavi/rzd-api/blob/master/screens/trainRouteReturn.png)
+![Поезда](https://github.com/visavi/rzd-api/blob/master/screens/trainRouteReturn.png)
 
 Принимает параметры
 обязательные параметр при первом запросе
@@ -121,7 +123,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 Ответы точно такие же как и в методе trainRoutes, только содержит 2 массива, в первом - туда, во-втором - обартно
 
 ###trainCarriages - получает список вагонов, свободные места, схема вагона, стоимость билетов, тип и класс обслуживания
-![Маршруты](https://github.com/visavi/rzd-api/blob/master/screens/trainCarriages.png)
+![Вагоны](https://github.com/visavi/rzd-api/blob/master/screens/trainCarriages.png)
 
 необязательные параметр при повтрном запросе
 * dir - 0 только в один конец, 1 - туда-обратно
@@ -129,7 +131,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 * code1 - код станции прибытия
 * dt0 - дата отправления (28.03.2016)
 * time0 - время отправления (15:30)
-* tnum0 - номер вагона (074Е)
+* tnum0 - номер вагона (072Е)
 
 Возвращает следующий массив вагонов
 * dСтандартный ответ из запросов выше
@@ -155,11 +157,28 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 
 
 
+### trainStationList - получени список всех станций в текущем маршруте движения
+![Станции](https://github.com/visavi/rzd-api/blob/master/screens/trainStationList.png)
+
+Пример запроса http://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5451&train_num=072%D0%95&date=13.03.2016
+Обращение через незащищенный протокол http://
+
+Формат получения данных XML
+
+Принимает параметры
+обязательные параметр при первом запросе
+* STRUCTURE_ID - ID категории (735)
+* layer_id - подкатегория (5451)
+
+необязательные параметр при повтрном запросе
+* train_num - номер поезда 072Е
+* date - дата отправления 13.03.2016
 
 
-
-
-
-
-
-
+Возвращает следующий массив станций
+Station - название станции
+Code - код станции
+ArvTime - время прибытия
+WaitingTime - время стоянки
+DepTime - время отправления
+Distance - пройденная дистанция
