@@ -3,7 +3,7 @@
 В качестве исходного класса используется class Auth
 для парсинга html используется класс nokogiri (https://github.com/olamedia/nokogiri), который в свою очередь требует встроенный класс DOM libxml PHP
 
-Для запросов через curl используется класс php-curl-class https://github.com/php-curl-class/php-curl-class
+Для запросов через curl используется класс php-curl-class (https://github.com/php-curl-class/php-curl-class)
 
 ```Для перехода между страницами необходимо сохранять данные пользователя из кук в файл cookies.txt, для правильной работы установите права доступа на чтение и запись в него```
 
@@ -17,7 +17,7 @@
 public function login($username, $password)
 
 * $username - логин на сайте
-* password - пароль на сайте
+* $password - пароль на сайте
 
 Возвращает результат авторизации boolean (true/false)
 
