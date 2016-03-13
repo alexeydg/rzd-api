@@ -2,13 +2,14 @@
 
 class Query {
 
+	private $cookie_file = 'cookie.txt';
 	/**
 	 * Запрос на получение данных
 	 * @param  string $path   путь к странице
 	 * @param  array $params  массив параметров
 	 * @return array          массив данных
 	 */
-	public function run($path, $params)
+	public function run($path, array $params)
 	{
 		do {
 			$curl = new \Curl\Curl();
@@ -45,23 +46,24 @@ class Query {
 					break;
 				default:
 					$curl->close();
-					throw new \Exception('Ошибка: '.isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
+					throw new \Exception(isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
 			}
 
 		} while (true);
 	}
 
 
-	public function get($path, $params)
+	public function send($path, array $params = [])
 	{
 		$curl = new \Curl\Curl();
 
 		$curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
-		$curl->setCookieFile('cookie.txt');
-		$curl->setCookieJar('cookie.txt');
+		$curl->setCookieFile($this->cookie_file);
+		$curl->setCookieJar($this->cookie_file);
 		$curl->post($path, $params);
+		$curl->close();
 
-		return [$curl->response, $curl->requestHeaders, $curl->responseHeaders];
+		return $curl;
 	}
 
 	/**
