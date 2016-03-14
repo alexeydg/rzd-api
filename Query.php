@@ -11,9 +11,9 @@ class Query {
 	 */
 	public function run($path, array $params)
 	{
-		do {
-			$curl = new \Curl\Curl();
+		$curl = new \Curl\Curl();
 
+		do {
 			if (!empty($cookies) && !empty($session)){
 				foreach ($cookies as $key=>$value){
 					$curl->setCookie($key, $value);
@@ -26,7 +26,7 @@ class Query {
 
 			if ($this->isJson($curl->response)) {
 				$response = json_decode($curl->response, true);
-				$result = $json['result'];
+				$result = $response['result'];
 			} else {
 				$response = (array)$curl->response;
 				$result = (isset($response['type']) && $response['type'] == 'REQUEST_ID') ? 'RID' : 'OK';
@@ -42,6 +42,9 @@ class Query {
 					break;
 				case 'OK':
 					$curl->close();
+					if (isset($response['tp'][0]['msgList'][0])) {
+						throw new \Exception($response['tp'][0]['msgList'][0]['message']);
+					}
 					return $response;
 					break;
 				default:
