@@ -27,7 +27,7 @@ class Auth {
 
 		$cookies = $query->getResponseCookies();
 
-		return !empty($cookies['AuthFlag']) ? true : false;
+		return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] != 'false' ? true : false;
 	}
 
 	/**
