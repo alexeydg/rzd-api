@@ -1,8 +1,9 @@
 <?php
+namespace Visavi;
 
 class Query {
 
-	private $cookie_file = 'cookie.txt';
+	private $cookie_file = __DIR__.'/../data/cookie.txt';
 	/**
 	 * Запрос на получение данных
 	 * @param  string $path   путь к странице

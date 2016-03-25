@@ -1,4 +1,5 @@
 <?php
+namespace Visavi;
 
 class Auth {
 
@@ -50,7 +51,7 @@ class Auth {
 	{
 		$profile = $this->page($this->profilePath);
 
-		$saw = new nokogiri($profile);
+		$saw = new \nokogiri($profile);
 
 		// Здесь чуть не доработано, селекты нужно отдельно парсить
 		$dataProfile = $saw->get('form.selfcareForm input')->toArray();
@@ -79,7 +80,7 @@ class Auth {
 	{
 		$profile = $this->page($this->profilePath, $data);
 
-		$saw = new nokogiri($profile);
+		$saw = new \nokogiri($profile);
 
 		$result = $saw->get('.warningBlock')->toText();
 

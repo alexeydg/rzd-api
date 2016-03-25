@@ -16,10 +16,8 @@
         "olamedia/nokogiri": "dev-master"
     },
     "autoload": {
-        "classmap": [
-            "Api.php",
-            "Query.php",
-            "Auth.php"
-        ]
+        "psr-4": {
+            "Visavi\\": "src/"
+        }
     }
 }
