@@ -15,6 +15,9 @@
         "php-curl-class/php-curl-class": "^4.11",
         "olamedia/nokogiri": "dev-master"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8|^5.2"
+    },
     "autoload": {
         "psr-4": {
             "Visavi\\": "src/"

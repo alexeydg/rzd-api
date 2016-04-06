@@ -1,14 +1,11 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../bootstrap.php';
 
 $auth = new \Visavi\Auth();
 
-$username = '';
-$password = '';
-
 // Проверка авторизации
-if (empty($username) || empty($password)) {
-	echo 'Установите логин и пароль в файле examples/user_login.php';
+if (empty(USERNAME) || empty(PASSWORD)) {
+	echo 'Установите логин и пароль в файле bootstrap.php';
 } else {
-	var_dump($auth->login($username, $password) ? 'Пользователь '.$username.' успешно авторизован!' : 'Не удалось авторизоваться!');
+	var_dump($auth->login(USERNAME, PASSWORD) ? 'Пользователь '.USERNAME.' успешно авторизован!' : 'Не удалось авторизоваться!');
 }
