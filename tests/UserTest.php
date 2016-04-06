@@ -18,7 +18,6 @@ class UserTest extends PHPUnit_Framework_TestCase
 		} else {
 			$this->assertTrue($this->auth->login(USERNAME, PASSWORD));
 		}
-
 	}
 
 	/**
@@ -46,9 +45,7 @@ class UserTest extends PHPUnit_Framework_TestCase
 			$this->markTestSkipped('Не удалось авторизоваться на сайте');
 		} else {
 			$replaceData = ['MIDDLE_NAME' => 'Васильевич', 'ACCEPT_POST_FLAG' => 1, 'GENDER_ID' => 2, 'QUESTION_ID' => 1];
-
 			$this->assertTrue($this->auth->setProfile(array_merge($dataProfile, $replaceData)));
 		}
-
 	}
 }
