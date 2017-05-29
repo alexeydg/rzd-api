@@ -6,8 +6,10 @@ $auth = new \Visavi\Auth();
 // Получаем массив данных из профиля
 $dataProfile = $auth->getProfile();
 
-if (empty($dataProfile)) {
-	echo 'Авторизуйтесь для просмотра профиля!';
+header('Content-Type: application/json');
+
+if ($dataProfile) {
+    echo json_encode($dataProfile);
 } else {
-	var_dump($dataProfile);
+    echo json_encode(['error' => 'Необходимо авторизоваться для просмотра профиля!']);
 }

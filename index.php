@@ -10,6 +10,9 @@
 <h2>Просмотр станций</h2>
 <a href="/examples/train_station_list.php">Просмотр</a>
 
+<h2>Просмотр списка кодов станций</h2>
+<a href="/examples/station_code.php">Просмотр</a>
+
 <h2>Авторизация пользователя</h2>
 <a href="/examples/user_login.php">Авторизация</a>
 
