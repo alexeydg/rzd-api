@@ -18,8 +18,6 @@ $params = [
 
 $route = $api->trainRoutes($params);
 
-header('Content-Type: application/json');
-
 if ($route) {
     $params = [
         'dir'   => 0,

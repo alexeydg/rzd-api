@@ -3,8 +3,6 @@ require __DIR__ . '/../bootstrap.php';
 
 $auth = new \Visavi\Auth();
 
-header('Content-Type: application/json');
-
 // Проверка авторизации
 if (empty(USERNAME) || empty(PASSWORD)) {
 

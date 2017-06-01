@@ -11,5 +11,4 @@ $params = [
     'date'      => $date0->format('d.m.Y'),
 ];
 
-header('Content-Type: application/json');
 echo json_encode($api->trainStationList($params));

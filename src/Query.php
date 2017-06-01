@@ -6,9 +6,10 @@ class Query {
     private $cookie_file = __DIR__.'/../data/cookie.txt';
     /**
      * Запрос на получение данных
-     * @param  string $path   путь к странице
-     * @param  array $params  массив параметров
-     * @return array          массив данных
+     *
+     * @param  string $path  путь к странице
+     * @param  array $params массив параметров
+     * @return array         массив данных
      * @throws \Exception
      */
     public function run($path, array $params)
@@ -41,7 +42,7 @@ class Query {
             switch ($result) {
                 case 'RID':
                     $session = $this->getRid($response);
-                    $cookies = $curl->getResponseCookies();
+                    $cookies = $curl->responseCookies;
                     sleep(1);
                     break;
                 case 'OK':
@@ -61,6 +62,7 @@ class Query {
 
     /**
      * Отправка и получение данных
+     *
      * @param  string $path   путь к сайту
      * @param  array  $params массив данных если необходимы параметры
      * @param  string $method метод отправки данных
@@ -81,6 +83,7 @@ class Query {
 
     /**
      * Получение уникального ключа RID
+     *
      * @param  string $json данные
      * @return string       уникальный ключ
      * @throws \Exception
@@ -98,6 +101,7 @@ class Query {
 
     /**
      * Проверка является ли строка валидным json-объектом
+     *
      * @param  string  $string проверяемая строка
      * @return boolean         результат проверки
      */

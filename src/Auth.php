@@ -13,6 +13,7 @@ class Auth {
 
     /**
      * Авторизация на сайте pass.rzd.ru
+     *
      * @param  string $username логин пользователя
      * @param  string $password пароль пользователя
      * @return boolean          результат авторизации
@@ -33,6 +34,7 @@ class Auth {
 
     /**
      * Метод чтения страниц
+     *
      * @param  string $path адрес страницы
      * @return string       html-код страницы
      */
@@ -45,6 +47,7 @@ class Auth {
 
     /**
      * Получение данных пользователя
+     *
      * @return array массив данных пользователя
      */
     public function getProfile()
@@ -72,7 +75,8 @@ class Auth {
     }
 
     /**
-     * Сохранение
+     * Сохранение профиля
+     *
      * @param  array $data данные профиля
      * @return boolean     результат сохраниения
      */

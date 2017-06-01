@@ -12,6 +12,7 @@ class Api {
 
     /**
      * Получение числа свободных мест в 1 точку
+     *
      * @param  array $params массив параметров
      * @return array         список мест
      */
@@ -29,6 +30,7 @@ class Api {
 
     /**
      * Получение числа свободных мест туда-обратно
+     *
      * @param  array $params массив параметров
      * @return array         список мест
      */
@@ -45,6 +47,7 @@ class Api {
 
     /**
      * Получение списка вагонов
+     *
      * @param  array $params массив параметров
      * @return array         список мест
      */
@@ -61,8 +64,9 @@ class Api {
 
     /**
      * Получение списка станций
-     * @param  array  $params массив параметров
-     * @return array          список станций
+     *
+     * @param  array $params массив параметров
+     * @return array         список станций
      */
     public function trainStationList(array $params)
     {
@@ -79,8 +83,9 @@ class Api {
 
     /**
      * Получение списка кодов станций
-     * @param  array  $params массив параметров
-     * @return array          список соответствий
+     *
+     * @param  array $params массив параметров
+     * @return array         список соответствий
      */
     public function stationCode(array $params)
     {

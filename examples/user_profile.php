@@ -6,8 +6,6 @@ $auth = new \Visavi\Auth();
 // Получаем массив данных из профиля
 $dataProfile = $auth->getProfile();
 
-header('Content-Type: application/json');
-
 if ($dataProfile) {
     echo json_encode($dataProfile);
 } else {

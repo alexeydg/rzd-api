@@ -9,8 +9,6 @@ $params = [
     'compactMode'     => 'y',
 ];
 
-header('Content-Type: application/json');
-
 $stations = $api->stationCode($params);
 
 if ($stations) {

@@ -15,5 +15,4 @@ $params = [
     'dt0' => $date0->format('d.m.Y'),
 ];
 
-header('Content-Type: application/json');
 echo json_encode($api->trainRoutes($params));
