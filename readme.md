@@ -1,14 +1,13 @@
 # Api сайта rzd.ru
 
-[Описание установки](https://github.com/visavi/rzd-api/blob/master/install.md)
+[![Latest Stable Version](https://poser.pugx.org/visavi/rzd-api/v/stable)](https://packagist.org/packages/visavi/rzd-api)
+[![Total Downloads](https://poser.pugx.org/visavi/rzd-api/downloads)](https://packagist.org/packages/visavi/rzd-api)
+[![Latest Unstable Version](https://poser.pugx.org/visavi/rzd-api/v/unstable)](https://packagist.org/packages/visavi/rzd-api)
+[![License](https://poser.pugx.org/visavi/rzd-api/license)](https://packagist.org/packages/visavi/rzd-api)
 
-[Описание интерфейса пользователя](https://github.com/visavi/rzd-api/blob/master/auth.md)
+[Описание установки](https://github.com/visavi/rzd-api/blob/master/docs/install.md)
 
-
-### Запуск тестов
-```
-vendor/bin/phpunit
-```
+[Описание интерфейса пользователя](https://github.com/visavi/rzd-api/blob/master/dosc/auth.md)
 
 ### Процесс приобретения билетов на сайте pass.rzd.ru разделен на несколько этапов
 
@@ -207,3 +206,6 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 
 К примеру при значении stationNamePart = 'ЧЕБ' будут возващены все станции начинающиеся на ЧЕБ (11 станций)
 
+### License
+
+The class is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
