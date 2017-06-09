@@ -100,7 +100,6 @@ class Api {
             }
 
         }
-
         return $stations;
     }
 }

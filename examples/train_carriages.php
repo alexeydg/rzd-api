@@ -12,17 +12,16 @@ $params = [
     'tfl'        => 3,
     'checkSeats' => 1,
     'code0'      => '2004000',
-    'code1'      => '2060600',
+    'code1'      => '2000000',
     'dt0'        => $date0->format('d.m.Y'),
 ];
-
 $route = $api->trainRoutes($params);
 
 if ($route) {
     $params = [
         'dir'   => 0,
         'code0' => '2004000',
-        'code1' => '2060600',
+        'code1' => '2000000',
         'dt0'   => $date0->format('d.m.Y'),
         'time0' => $route[0]['trTime0'],
         'tnum0' => $route[0]['number'],

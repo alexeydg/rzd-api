@@ -12,7 +12,7 @@ $params = [
     'tfl'        => 3,
     'checkSeats' => 1,
     'code0'      => '2004000',
-    'code1'      => '2060600',
+    'code1'      => '2000000',
     'dt0'        => $date0->format('d.m.Y'),
     'dt1'        => $date1->format('d.m.Y'),
 ];

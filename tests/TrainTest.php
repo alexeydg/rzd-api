@@ -24,7 +24,7 @@ class TrainTest extends TestCase
             'tfl'        => 3,
             'checkSeats' => 1,
             'code0'      => '2004000',
-            'code1'      => '2060600',
+            'code1'      => '2000000',
             'dt0'        => $this->date0->format('d.m.Y'),
         ];
 
@@ -42,7 +42,7 @@ class TrainTest extends TestCase
             'tfl'        => 3,
             'checkSeats' => 1,
             'code0'      => '2004000',
-            'code1'      => '2060600',
+            'code1'      => '2000000',
             'dt0'        => $this->date0->format('d.m.Y'),
             'dt1'        => $this->date1->format('d.m.Y'),
         ];
@@ -61,7 +61,7 @@ class TrainTest extends TestCase
             'tfl'        => 3,
             'checkSeats' => 1,
             'code0'      => '2004000',
-            'code1'      => '2060600',
+            'code1'      => '2000000',
             'dt0'        => $this->date0->format('d.m.Y'),
         ];
 
@@ -71,7 +71,7 @@ class TrainTest extends TestCase
             $params = [
                 'dir'   => 0,
                 'code0' => '2004000',
-                'code1' => '2060600',
+                'code1' => '2000000',
                 'dt0'   => $this->date0->format('d.m.Y'),
                 'time0' => $route[0]['trTime0'],
                 'tnum0' => $route[0]['number'],
