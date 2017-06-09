@@ -27,7 +27,7 @@ class Auth {
 
         $query = $this->query->send($this->loginPath, $params);
 
-        $cookies = $query->getResponseCookies();
+        $cookies = $query->responseCookies;
 
         return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] != 'false' ? true : false;
     }

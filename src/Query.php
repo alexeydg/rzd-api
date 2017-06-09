@@ -3,7 +3,6 @@ namespace Visavi;
 
 class Query {
 
-    private $cookie_file = __DIR__.'/../data/cookie.txt';
     /**
      * Запрос на получение данных
      *
@@ -72,9 +71,11 @@ class Query {
     {
         $curl = new \Curl\Curl();
 
+        $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
+
         $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
-        $curl->setCookieFile($this->cookie_file);
-        $curl->setCookieJar($this->cookie_file);
+        $curl->setCookieFile($cookieFile);
+        $curl->setCookieJar($cookieFile);
         $curl->$method($path, $params);
         $curl->close();
 
