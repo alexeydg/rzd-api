@@ -7,7 +7,7 @@
 
 [Описание установки](https://github.com/visavi/rzd-api/blob/master/docs/install.md)
 
-[Описание интерфейса пользователя](https://github.com/visavi/rzd-api/blob/master/dosc/auth.md)
+[Описание интерфейса пользователя](https://github.com/visavi/rzd-api/blob/master/docs/auth.md)
 
 ### Процесс приобретения билетов на сайте pass.rzd.ru разделен на несколько этапов
 
