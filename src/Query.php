@@ -1,5 +1,9 @@
 <?php
-namespace Visavi;
+
+namespace Rzd;
+
+use Curl\Curl;
+use RuntimeException;
 
 class Query {
 
@@ -13,7 +17,7 @@ class Query {
      */
     public function run($path, array $params)
     {
-        $curl = new \Curl\Curl();
+        $curl = new Curl();
 
         do {
             if (!empty($cookies) && !empty($session)){
@@ -31,11 +35,11 @@ class Query {
                 $result = $response['result'];
             } else {
                 $response = (array)$curl->response;
-                $result = (isset($response['type']) && $response['type'] == 'REQUEST_ID') ? 'RID' : 'OK';
+                $result = (isset($response['type']) && $response['type'] === 'REQUEST_ID') ? 'RID' : 'OK';
             }
 
-            if (is_null($response)) {
-                throw new \Exception('Ошибка: Не удалось получить данные');
+            if ($response === null) {
+                throw new RuntimeException('Ошибка: Не удалось получить данные');
             }
 
             switch ($result) {
@@ -47,13 +51,13 @@ class Query {
                 case 'OK':
                     $curl->close();
                     if (isset($response['tp'][0]['msgList'][0])) {
-                        throw new \Exception($response['tp'][0]['msgList'][0]['message']);
+                        throw new RuntimeException($response['tp'][0]['msgList'][0]['message']);
                     }
                     return $response;
                     break;
                 default:
                     $curl->close();
-                    throw new \Exception(isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
+                    throw new RuntimeException(isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
             }
 
         } while (true);
@@ -66,10 +70,11 @@ class Query {
      * @param  array  $params массив данных если необходимы параметры
      * @param  string $method метод отправки данных
      * @return string         данные страницы в json формате
+     * @throws \ErrorException
      */
     public function send($path, array $params = [], $method = 'post')
     {
-        $curl = new \Curl\Curl();
+        $curl = new Curl();
 
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
@@ -97,7 +102,7 @@ class Query {
             }
         }
 
-        throw new \Exception('Ошибка: Не найден уникальный ключ');
+        throw new RuntimeException('Ошибка: Не найден уникальный ключ');
     }
 
     /**
@@ -109,6 +114,7 @@ class Query {
     protected function isJson($string)
     {
         json_decode($string);
-        return (json_last_error() == JSON_ERROR_NONE);
+
+        return json_last_error() === JSON_ERROR_NONE;
     }
 }

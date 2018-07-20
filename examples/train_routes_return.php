@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$api = new \Visavi\Api();
+$api = new \Rzd\Api();
 
 $start = new DateTimeImmutable();
 $date0 = $start->modify('+1 day');

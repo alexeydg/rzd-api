@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$api = new \Visavi\Api();
+$api = new \Rzd\Api();
 
 $params = [
     'stationNamePart' => 'ЧЕБ',
@@ -16,4 +16,3 @@ if ($stations) {
 } else {
     echo json_encode(['error' => 'Не найдено совпадений!']);
 }
-

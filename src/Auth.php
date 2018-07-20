@@ -1,11 +1,16 @@
 <?php
-namespace Visavi;
+
+namespace Rzd;
+
+use ErrorException;
 
 class Auth {
 
     protected $loginPath = 'https://pass.rzd.ru/timetable/j_security_check/ru';
 
     protected $profilePath = 'https://pass.rzd.ru/selfcare/editProfile/ru';
+
+    private $query;
 
     public function __construct() {
         $this->query = new Query();
@@ -17,6 +22,7 @@ class Auth {
      * @param  string $username логин пользователя
      * @param  string $password пароль пользователя
      * @return boolean          результат авторизации
+     * @throws ErrorException
      */
     public function login($username, $password)
     {
@@ -29,26 +35,27 @@ class Auth {
 
         $cookies = $query->responseCookies;
 
-        return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] != 'false' ? true : false;
+        return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] != 'false';
     }
 
     /**
      * Метод чтения страниц
      *
      * @param  string $path адрес страницы
+     * @param  array   $params
      * @return string       html-код страницы
+     * @throws ErrorException
      */
     public function page($path, array $params = [])
     {
-        $query = $this->query->send($path, $params);
-
-        return $query->response;
+        return $this->query->send($path, $params)->response;
     }
 
     /**
      * Получение данных пользователя
      *
      * @return array массив данных пользователя
+     * @throws ErrorException
      */
     public function getProfile()
     {
@@ -66,7 +73,9 @@ class Auth {
 
         foreach($dataProfile as $data) {
 
-            if (empty($data['name']) || in_array($data['name'], $ignoreName)) continue;
+            if (empty($data['name']) || in_array($data['name'], $ignoreName, true)) {
+                continue;
+            }
 
             $profile[$data['name']] = isset($data['value']) ? $data['value'] : '';
         }
@@ -79,6 +88,7 @@ class Auth {
      *
      * @param  array $data данные профиля
      * @return boolean     результат сохраниения
+     * @throws ErrorException
      */
     public function setProfile($data)
     {
@@ -88,6 +98,6 @@ class Auth {
 
         $result = $saw->get('.warningBlock')->toText();
 
-        return $result == 'Профиль пользователя успешно изменен' ? true : false;
+        return $result === 'Профиль пользователя успешно изменен';
     }
 }

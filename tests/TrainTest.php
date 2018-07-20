@@ -1,15 +1,17 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Visavi\Api;
+use Rzd\Api;
 
 class TrainTest extends TestCase
 {
+    private $api;
+
     protected function setUp()
     {
         $this->api = new Api();
 
-        $start = new DateTimeImmutable();
+        $start = new DateTime();
         $this->date0 = $start->modify('+1 day');
         $this->date1 = $start->modify('+5 day');
     }

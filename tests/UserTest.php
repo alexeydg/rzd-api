@@ -1,10 +1,12 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Visavi\Auth;
+use Rzd\Auth;
 
 class UserTest extends TestCase
 {
+    private $auth;
+
     protected function setUp()
     {
         $this->auth = new Auth();

@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$auth = new \Visavi\Auth();
+$auth = new \Rzd\Auth();
 
 $dataProfile = $auth->getProfile();
 

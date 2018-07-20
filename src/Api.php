@@ -1,10 +1,14 @@
 <?php
-namespace Visavi;
+
+namespace Rzd;
+
+use Exception;
 
 class Api {
 
     protected $path = 'https://pass.rzd.ru/timetable/public/ru';
     protected $suggestionPath = 'http://www.rzd.ru/suggester';
+    private $query;
 
     public function __construct() {
         $this->query = new Query();
@@ -15,33 +19,36 @@ class Api {
      *
      * @param  array $params массив параметров
      * @return array         список мест
+     * @throws Exception
      */
     public function trainRoutes(array $params)
     {
         $layer = [
             'STRUCTURE_ID' => 735,
-            'layer_id' => 5371,
+            'layer_id'     => 5371,
         ];
 
         $routes = $this->query->run($this->path, $layer + $params);
+
         return $routes['tp'][0]['list'];
     }
-
 
     /**
      * Получение числа свободных мест туда-обратно
      *
      * @param  array $params массив параметров
      * @return array         список мест
+     * @throws Exception
      */
     public function trainRoutesReturn(array $params)
     {
         $layer = [
             'STRUCTURE_ID' => 735,
-            'layer_id' => 5371,
+            'layer_id'     => 5371,
         ];
 
         $routes = $this->query->run($this->path, $layer + $params);
+
         return [$routes['tp'][0]['list'], $routes['tp'][1]['list']];
     }
 
@@ -50,16 +57,21 @@ class Api {
      *
      * @param  array $params массив параметров
      * @return array         список мест
+     * @throws Exception
      */
     public function trainCarriages(array $params)
     {
         $layer = [
             'STRUCTURE_ID' => 735,
-            'layer_id' => 5373,
+            'layer_id'     => 5373,
         ];
 
         $routes = $this->query->run($this->path, $layer + $params);
-        return ['cars' => $routes['lst'][0]['cars'], 'schemes' => $routes['schemes'], 'companies' => $routes['insuranceCompany']];
+
+        return [
+            'cars'      => $routes['lst'][0]['cars'],
+            'schemes'   => $routes['schemes'],
+            'companies' => $routes['insuranceCompany']];
     }
 
     /**
@@ -67,6 +79,7 @@ class Api {
      *
      * @param  array $params массив параметров
      * @return array         список станций
+     * @throws Exception
      */
     public function trainStationList(array $params)
     {
@@ -74,10 +87,11 @@ class Api {
 
         $layer = [
             'STRUCTURE_ID' => 735,
-            'layer_id' => 5451,
+            'layer_id'     => 5451,
         ];
 
         $routes = $this->query->run($this->path, $layer + $params);
+
         return ['train' => $routes['Train'], 'routes' => $routes['Routes']];
     }
 
@@ -86,6 +100,7 @@ class Api {
      *
      * @param  array $params массив параметров
      * @return array         список соответствий
+     * @throws \ErrorException
      */
     public function stationCode(array $params)
     {
@@ -100,6 +115,7 @@ class Api {
             }
 
         }
+
         return $stations;
     }
 }
