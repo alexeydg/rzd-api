@@ -107,7 +107,8 @@ class Api {
         $routes = $this->query->send($this->suggestionPath, $params, 'get');
 
         $stations = [];
-        if ($routes->response) {
+
+        if ($routes->response && is_array($routes->response)) {
             foreach ($routes->response as $station){
                 if (mb_stristr($station->n, $params['stationNamePart'])) {
                     $stations[] = ['station' => $station->n,  'code' => $station->c];

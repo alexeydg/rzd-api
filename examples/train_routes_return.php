@@ -3,7 +3,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $api = new \Rzd\Api();
 
-$start = new DateTimeImmutable();
+$start = new DateTime();
 $date0 = $start->modify('+1 day');
 $date1 = $start->modify('+5 day');
 

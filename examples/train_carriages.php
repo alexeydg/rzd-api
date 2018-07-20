@@ -3,7 +3,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $api = new \Rzd\Api();
 
-$start = new DateTimeImmutable();
+$start = new DateTime();
 $date0 = $start->modify('+1 day');
 
 // Получаем акутальный маршрут

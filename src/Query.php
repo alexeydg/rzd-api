@@ -78,6 +78,11 @@ class Query {
 
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
+        if (PROXY['server']) {
+            $curl->setProxy(PROXY['server'], PROXY['port'], PROXY['username'], PROXY['password']);
+            $curl->setProxyTunnel();
+        }
+
         $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
         $curl->setCookieFile($cookieFile);
         $curl->setCookieJar($cookieFile);
