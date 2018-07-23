@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$auth = new \Rzd\Auth();
+$auth = new Rzd\Auth();
 
 // Получаем массив данных из профиля
 $dataProfile = $auth->getProfile();

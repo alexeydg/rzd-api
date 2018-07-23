@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$api = new \Rzd\Api();
+$api = new Rzd\Api();
 
 $start = new DateTime();
 $date0 = $start->modify('+1 day');

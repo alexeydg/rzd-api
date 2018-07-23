@@ -2,7 +2,8 @@
 
 namespace Rzd;
 
-use ErrorException;
+use Exception;
+use nokogiri;
 
 class Auth {
 
@@ -22,7 +23,7 @@ class Auth {
      * @param  string $username логин пользователя
      * @param  string $password пароль пользователя
      * @return boolean          результат авторизации
-     * @throws ErrorException
+     * @throws Exception
      */
     public function login($username, $password)
     {
@@ -35,16 +36,16 @@ class Auth {
 
         $cookies = $query->responseCookies;
 
-        return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] != 'false';
+        return isset($cookies['AuthFlag']) && $cookies['AuthFlag'] == 'true';
     }
 
     /**
      * Метод чтения страниц
      *
      * @param  string $path адрес страницы
-     * @param  array   $params
+     * @param  array  $params
      * @return string       html-код страницы
-     * @throws ErrorException
+     * @throws Exception
      */
     public function page($path, array $params = [])
     {
@@ -55,13 +56,13 @@ class Auth {
      * Получение данных пользователя
      *
      * @return array массив данных пользователя
-     * @throws ErrorException
+     * @throws Exception
      */
     public function getProfile()
     {
         $profile = $this->page($this->profilePath);
 
-        $saw = new \nokogiri($profile);
+        $saw = new nokogiri($profile);
 
         // Здесь чуть не доработано, селекты нужно отдельно парсить
         $dataProfile = $saw->get('form.selfcareForm input')->toArray();
@@ -88,13 +89,14 @@ class Auth {
      *
      * @param  array $data данные профиля
      * @return boolean     результат сохраниения
-     * @throws ErrorException
+     * @throws Exception
      */
     public function setProfile($data)
     {
-        $profile = $this->page($this->profilePath, $data);
+        $user    = $this->getProfile();
+        $profile = $this->page($this->profilePath, array_merge($user, $data));
 
-        $saw = new \nokogiri($profile);
+        $saw = new nokogiri($profile);
 
         $result = $saw->get('.warningBlock')->toText();
 

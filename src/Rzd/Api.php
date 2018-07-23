@@ -71,7 +71,8 @@ class Api {
         return [
             'cars'      => $routes['lst'][0]['cars'],
             'schemes'   => $routes['schemes'],
-            'companies' => $routes['insuranceCompany']];
+            'companies' => $routes['insuranceCompany'],
+        ];
     }
 
     /**
@@ -100,7 +101,7 @@ class Api {
      *
      * @param  array $params массив параметров
      * @return array         список соответствий
-     * @throws \ErrorException
+     * @throws Exception
      */
     public function stationCode(array $params)
     {
@@ -114,7 +115,6 @@ class Api {
                     $stations[] = ['station' => $station->n,  'code' => $station->c];
                 }
             }
-
         }
 
         return $stations;

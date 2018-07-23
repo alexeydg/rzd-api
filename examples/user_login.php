@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../bootstrap.php';
 
-$auth = new \Rzd\Auth();
+$auth = new Rzd\Auth();
 
 // Проверка авторизации
 if (empty(USERNAME) || empty(PASSWORD)) {

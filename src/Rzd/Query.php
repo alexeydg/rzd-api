@@ -3,6 +3,7 @@
 namespace Rzd;
 
 use Curl\Curl;
+use Exception;
 use RuntimeException;
 
 class Query {
@@ -13,14 +14,14 @@ class Query {
      * @param  string $path  путь к странице
      * @param  array $params массив параметров
      * @return array         массив данных
-     * @throws \Exception
+     * @throws Exception
      */
     public function run($path, array $params)
     {
         $curl = new Curl();
 
         do {
-            if (!empty($cookies) && !empty($session)){
+            if (! empty($cookies) && ! empty($session)){
                 foreach ($cookies as $key=>$value){
                     $curl->setCookie($key, $value);
                 }
@@ -32,10 +33,10 @@ class Query {
 
             if ($this->isJson($curl->response)) {
                 $response = json_decode($curl->response, true);
-                $result = $response['result'];
+                $result   = $response['result'];
             } else {
-                $response = (array)$curl->response;
-                $result = (isset($response['type']) && $response['type'] === 'REQUEST_ID') ? 'RID' : 'OK';
+                $response = (array) $curl->response;
+                $result   = isset($response['type']) && $response['type'] === 'REQUEST_ID' ? 'RID' : 'OK';
             }
 
             if ($response === null) {
@@ -70,7 +71,7 @@ class Query {
      * @param  array  $params массив данных если необходимы параметры
      * @param  string $method метод отправки данных
      * @return string         данные страницы в json формате
-     * @throws \ErrorException
+     * @throws Exception
      */
     public function send($path, array $params = [], $method = 'post')
     {
@@ -97,7 +98,7 @@ class Query {
      *
      * @param  string $json данные
      * @return string       уникальный ключ
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getRid($json)
     {
