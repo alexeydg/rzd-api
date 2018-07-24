@@ -5,15 +5,16 @@ namespace Rzd;
 use Exception;
 use nokogiri;
 
-class Auth {
-
+class Auth
+{
     protected $loginPath = 'https://pass.rzd.ru/timetable/j_security_check/ru';
 
     protected $profilePath = 'https://pass.rzd.ru/selfcare/editProfile/ru';
 
     private $query;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->query = new Query();
     }
 

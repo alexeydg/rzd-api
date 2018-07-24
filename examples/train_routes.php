@@ -1,7 +1,17 @@
 <?php
-require __DIR__ . '/../bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-$api = new Rzd\Api();
+$config = new Rzd\Config();
+$config->setProxy([
+    'server' => '94.153.169.60',
+    'port'   => '8080',
+]);
+
+$config->setUserAgent('Mozilla 4');
+$config->setReferer('rzd.ru');
+
+
+$api = new Rzd\Api($config);
 
 $start = new DateTime();
 $date0 = $start->modify('+1 day');
@@ -15,4 +25,4 @@ $params = [
     'dt0'        => $date0->format('d.m.Y'),
 ];
 
-echo json_encode($api->trainRoutes($params));
+echo $api->trainRoutes($params);

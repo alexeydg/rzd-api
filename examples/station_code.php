@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $api = new Rzd\Api();
 
@@ -12,7 +12,7 @@ $params = [
 $stations = $api->stationCode($params);
 
 if ($stations) {
-    echo json_encode($stations);
+    echo $stations;
 } else {
     echo json_encode(['error' => 'Не найдено совпадений!']);
 }

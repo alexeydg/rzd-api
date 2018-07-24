@@ -6,62 +6,21 @@ use Curl\Curl;
 use Exception;
 use RuntimeException;
 
-class Query {
+class Query
+{
+    private $config;
+    private $curl;
 
     /**
-     * Запрос на получение данных
+     * Query constructor.
      *
-     * @param  string $path  путь к странице
-     * @param  array $params массив параметров
-     * @return array         массив данных
+     * @param Config $config
      * @throws Exception
      */
-    public function run($path, array $params)
+    public function __construct(Config $config)
     {
-        $curl = new Curl();
-
-        do {
-            if (! empty($cookies) && ! empty($session)){
-                foreach ($cookies as $key=>$value){
-                    $curl->setCookie($key, $value);
-                }
-
-                $params += ['rid' => $session];
-            }
-
-            $curl->post($path, $params);
-
-            if ($this->isJson($curl->response)) {
-                $response = json_decode($curl->response, true);
-                $result   = $response['result'];
-            } else {
-                $response = (array) $curl->response;
-                $result   = isset($response['type']) && $response['type'] === 'REQUEST_ID' ? 'RID' : 'OK';
-            }
-
-            if ($response === null) {
-                throw new RuntimeException('Ошибка: Не удалось получить данные');
-            }
-
-            switch ($result) {
-                case 'RID':
-                    $session = $this->getRid($response);
-                    $cookies = $curl->responseCookies;
-                    sleep(1);
-                    break;
-                case 'OK':
-                    $curl->close();
-                    if (isset($response['tp'][0]['msgList'][0])) {
-                        throw new RuntimeException($response['tp'][0]['msgList'][0]['message']);
-                    }
-                    return $response;
-                    break;
-                default:
-                    $curl->close();
-                    throw new RuntimeException(isset($response['message']) ? $response['message'] : 'Ошибка разбора XML');
-            }
-
-        } while (true);
+        $this->config = $config;
+        $this->curl = new Curl();
     }
 
     /**
@@ -73,38 +32,99 @@ class Query {
      * @return string         данные страницы в json формате
      * @throws Exception
      */
-    public function send($path, array $params = [], $method = 'post')
+    public function send($path, array $params = [], $method = 'post'): string
     {
-        $curl = new Curl();
-
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
-        if (PROXY['server']) {
-            $curl->setProxy(PROXY['server'], PROXY['port'], PROXY['username'], PROXY['password']);
-            $curl->setProxyTunnel();
+        $proxy = $this->config->getProxy();
+        if ($proxy['server']) {
+            $this->curl->setProxy($proxy['server'], $proxy['port'], $proxy['username'], $proxy['password']);
+            $this->curl->setProxyTunnel();
         }
 
-        $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
-        $curl->setCookieFile($cookieFile);
-        $curl->setCookieJar($cookieFile);
-        $curl->$method($path, $params);
-        $curl->close();
+        if ($userAgent = $this->config->getUserAgent()) {
+            $this->curl->setUserAgent($userAgent);
+        }
 
-        return $curl;
+        $this->curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
+        $this->curl->setCookieFile($cookieFile);
+        $this->curl->setCookieJar($cookieFile);
+        $this->run($path, $params, $method);
+
+        return $this->curl->getResponse();
     }
 
     /**
-     * Получение уникального ключа RID
+     * Запрашивает данные
+     *
+     * @param  string $path   путь к странице
+     * @param  array  $params массив параметров
+     * @param  string $method тип запроса
+     * @return Curl           массив данных
+     * @throws Exception
+     */
+    protected function run($path, array $params, $method): Curl
+    {
+        do {
+            if (! empty($cookies) && ! empty($session)){
+                foreach ($cookies as $key=>$value){
+                    $this->curl->setCookie($key, $value);
+                }
+
+                $params += ['rid' => $session];
+            }
+
+            $this->setXmlDecoder();
+            $this->curl->$method($path, $params);
+
+            $response = $this->curl->getResponse();
+
+            if (empty($response) || ! empty($response->error)) {
+                throw new RuntimeException('Ошибка: Не удалось получить данные');
+            }
+
+            var_dump($response); exit;
+
+            $response = json_decode($response);
+            $result   = $response->result ?? $response->type ?? 'OK';
+
+            switch ($result) {
+                case 'RID':
+                case 'REQUEST_ID':
+                    $session = $this->getRid($response);
+                    $cookies = $this->curl->getResponseCookies();
+                    sleep(1);
+                    break 1;
+
+                case 'OK':
+                    if (isset($response->tp[0]->msgList[0]->message)) {
+                        $this->curl->close();
+                        throw new RuntimeException($response->tp[0]->msgList[0]->message);
+                    }
+                    break 2;
+
+                default:
+                   $this->curl->close();
+                   throw new RuntimeException($response->message ?? 'Ошибка разбора XML');
+            }
+
+        } while (true);
+
+        return $this->curl;
+    }
+
+    /**
+     * Получает уникальный ключа RID
      *
      * @param  string $json данные
      * @return string       уникальный ключ
      * @throws Exception
      */
-    protected function getRid($json)
+    protected function getRid($json): string
     {
         foreach (['rid', 'RID'] as $rid){
-            if (isset($json[$rid])) {
-                return $json[$rid];
+            if (isset($json->$rid)) {
+                return $json->$rid;
             }
         }
 
@@ -112,15 +132,31 @@ class Query {
     }
 
     /**
-     * Проверка является ли строка валидным json-объектом
+     * Устанавливает декодер для XML
      *
-     * @param  string  $string проверяемая строка
-     * @return boolean         результат проверки
+     * @return void
      */
-    protected function isJson($string)
+    private function setXmlDecoder()
     {
-        json_decode($string);
+        $xmlDecoder = function ($response) {
+            $xmlObj = @simplexml_load_string($response);
+            if ($xmlObj !== false) {
+                $response = json_encode($xmlObj);
+            }
 
-        return json_last_error() === JSON_ERROR_NONE;
+            return $response;
+        };
+
+        $this->curl->setXmlDecoder($xmlDecoder);
     }
+
+    /**
+     * Закрывает соединение
+     */
+    public function __destruct()
+    {
+        $this->curl->close();
+    }
+
+
 }

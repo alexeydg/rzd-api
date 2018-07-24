@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $api = new Rzd\Api();
 
@@ -17,4 +17,4 @@ $params = [
     'dt1'        => $date1->format('d.m.Y'),
 ];
 
-echo json_encode($api->trainRoutesReturn($params));
+echo $api->trainRoutesReturn($params);

@@ -4,110 +4,120 @@ namespace Rzd;
 
 use Exception;
 
-class Api {
-
+class Api
+{
     protected $path = 'https://pass.rzd.ru/timetable/public/ru';
-    protected $suggestionPath = 'http://www.rzd.ru/suggester';
+
+    protected $suggestionPath = 'http://pass.rzd.ru/suggester';
+
     private $query;
 
-    public function __construct() {
-        $this->query = new Query();
+    public function __construct(Config $config = null)
+    {
+        if (! $config) {
+            $config = new Config();
+        }
+
+        $this->query = new Query($config);
     }
 
     /**
      * Получение числа свободных мест в 1 точку
      *
      * @param  array $params массив параметров
-     * @return array         список мест
+     * @return string        список мест
      * @throws Exception
      */
-    public function trainRoutes(array $params)
+    public function trainRoutes(array $params): string
     {
         $layer = [
             'STRUCTURE_ID' => 735,
             'layer_id'     => 5371,
         ];
 
-        $routes = $this->query->run($this->path, $layer + $params);
+        $routes = json_decode($this->query->send($this->path, $layer + $params));
 
-        return $routes['tp'][0]['list'];
+        return json_encode($routes->tp[0]->list);
     }
 
     /**
      * Получение числа свободных мест туда-обратно
      *
      * @param  array $params массив параметров
-     * @return array         список мест
+     * @return string         список мест
      * @throws Exception
      */
-    public function trainRoutesReturn(array $params)
+    public function trainRoutesReturn(array $params): string
     {
         $layer = [
             'STRUCTURE_ID' => 735,
             'layer_id'     => 5371,
         ];
 
-        $routes = $this->query->run($this->path, $layer + $params);
+        $routes = json_decode($this->query->send($this->path, $layer + $params));
 
-        return [$routes['tp'][0]['list'], $routes['tp'][1]['list']];
+        return json_encode([$routes->tp[0]->list, $routes->tp[1]->list]);
     }
 
     /**
      * Получение списка вагонов
      *
      * @param  array $params массив параметров
-     * @return array         список мест
+     * @return string        список мест
      * @throws Exception
      */
-    public function trainCarriages(array $params)
+    public function trainCarriages(array $params): string
     {
         $layer = [
             'STRUCTURE_ID' => 735,
             'layer_id'     => 5373,
         ];
 
-        $routes = $this->query->run($this->path, $layer + $params);
+        $routes = json_decode($this->query->send($this->path, $layer + $params));
 
-        return [
-            'cars'      => $routes['lst'][0]['cars'],
-            'schemes'   => $routes['schemes'],
-            'companies' => $routes['insuranceCompany'],
-        ];
+        return json_encode([
+            'cars'      => $routes->lst[0]->cars,
+            'schemes'   => $routes->schemes,
+            'companies' => $routes->insuranceCompany,
+        ]);
     }
 
     /**
      * Получение списка станций
      *
      * @param  array $params массив параметров
-     * @return array         список станций
+     * @return string        список станций
      * @throws Exception
      */
-    public function trainStationList(array $params)
+    public function trainStationList(array $params): string
     {
-        $this->path = str_replace('https://', 'http://', $this->path); // Fix
-
         $layer = [
-            'STRUCTURE_ID' => 735,
-            'layer_id'     => 5451,
+            'layer_id' => 5804,
         ];
 
-        $routes = $this->query->run($this->path, $layer + $params);
+        $routes = json_decode($this->query->send($this->path, $layer + $params));
 
-        return ['train' => $routes['Train'], 'routes' => $routes['Routes']];
+        return json_encode([
+            'train' => $routes->Train,
+            'routes' => $routes->Routes,
+        ]);
     }
 
     /**
      * Получение списка кодов станций
      *
      * @param  array $params массив параметров
-     * @return array         список соответствий
+     * @return string        список соответствий
      * @throws Exception
      */
-    public function stationCode(array $params)
+    public function stationCode(array $params): string
     {
-        $routes = $this->query->send($this->suggestionPath, $params, 'get');
+        $routes = json_decode($this->query->send($this->suggestionPath, $params, 'get'));
 
-        $stations = [];
+
+        var_dump($routes); exit;
+
+       /* $stations = [];
 
         if ($routes->response && is_array($routes->response)) {
             foreach ($routes->response as $station){
@@ -117,6 +127,6 @@ class Api {
             }
         }
 
-        return $stations;
+        return $stations;*/
     }
 }
