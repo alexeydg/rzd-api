@@ -27,7 +27,7 @@ class Config
      *
      * @return array
      */
-    public function getAuth()
+    public function getAuth(): array
     {
         return [
             'username' => $this->username,
@@ -50,13 +50,13 @@ class Config
      *
      * @return array
      */
-    public function getProxy()
+    public function getProxy(): array
     {
         return [
-            'server'   => isset($this->proxy['server']) ? $this->proxy['server']: null,
-            'port'     => isset($this->proxy['port']) ? $this->proxy['port']: null,
-            'username' => isset($this->proxy['username']) ? $this->proxy['username'] : null,
-            'password' => isset($this->proxy['password']) ? $this->proxy['username'] : null,
+            'server'   => $this->proxy['server'] ?? null,
+            'port'     => $this->proxy['port'] ?? null,
+            'username' => $this->proxy['username'] ?? null,
+            'password' => $this->proxy['password'] ?? null,
         ];
     }
 
@@ -75,7 +75,7 @@ class Config
      *
      * @return string
      */
-    public function getUserAgent()
+    public function getUserAgent(): string
     {
         return $this->userAgent;
     }
@@ -95,7 +95,7 @@ class Config
      *
      * @return string
      */
-    public function getReferer()
+    public function getReferer(): string
     {
         return $this->referer;
     }

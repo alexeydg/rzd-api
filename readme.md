@@ -47,15 +47,15 @@ OK - получен полный ответ с запрошенными нами
 Все запросы идут на адрес http://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=подкатегория&ключ=значение
 
 Где подкатегория это
-* 5371 - выбор маршрута (Получения списка поездов)
-* 5373 - детальная информация  выбранному по поезду
-* 5451 - просмотр маршрута со всеми остановками (Формат получения RID и самих данных XML, Через незащищенный протокол http)
+* 5827 - выбор маршрута (Получения списка поездов)
+* 5764 - детальная информация  выбранному по поезду, список вагонов
+* 5804 - просмотр маршрута со всеми остановками
 
 ### Первый запрос
-https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&dir=0&tfl=3&checkSeats=1&code0={{code_from}}&dt0={{date}}&code1={{code_to}}&dt1={{date}}
+https://pass.rzd.ru/timetable/public/ru?layer_id=5827&dir=0&tfl=3&checkSeats=1&code0={{code_from}}&dt0={{date}}&code1={{code_to}}&dt1={{date}}
 
 ### Второй и следующие запросы
-https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid}}
+https://pass.rzd.ru/timetable/public/ru?layer_id=5827&rid={{rid}}
 
 Второй запрос выполняется с уже полученным нами уникальным идентификатором который хранит в себе данные предыдущего запроса и куками
 Поэтому в целях оптимизации можно не отправлять  некоторые параметры указанные нами в первом запросе
@@ -70,8 +70,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 
 Принимает параметры
 обязательные параметр при первом запросе
-* STRUCTURE_ID - ID категории (735)
-* layer_id - подкатегория (5371)
+* layer_id - подкатегория (5827)
 
 необязательные параметр при повторном запросе
 * dir - 0 только в один конец, 1 - туда-обратно
@@ -118,8 +117,7 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 
 Принимает параметры
 обязательные параметр при первом запросе
-* STRUCTURE_ID - ID категории (735)
-* layer_id - подкатегория (5371)
+* layer_id - подкатегория (5827)
 
 необязательные параметр при повторном запросе
 * dir - 0 только в один конец, 1 - туда-обратно
@@ -170,15 +168,14 @@ https://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5371&rid={{rid
 ### trainStationList - получение списка всех станций в текущем маршруте движения
 ![Станции](https://github.com/visavi/rzd-api/blob/master/screens/trainStationList.png)
 
-Пример запроса http://pass.rzd.ru/timetable/public/ru?STRUCTURE_ID=735&layer_id=5451&train_num=072%D0%95&date=13.03.2016
+Пример запроса http://pass.rzd.ru/timetable/public/ru?layer_id=5804&train_num=072%D0%95&date=13.03.2016
 Обращение через незащищенный протокол http://
 
 Формат получения данных XML
 
 Принимает параметры
 обязательные параметр при первом запросе
-* STRUCTURE_ID - ID категории (735)
-* layer_id - подкатегория (5451)
+* layer_id - подкатегория (5804)
 
 необязательные параметр при повтрном запросе
 * train_num - номер поезда 072Е

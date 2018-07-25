@@ -6,9 +6,9 @@ use Exception;
 
 class Api
 {
-    protected $path = 'https://pass.rzd.ru/timetable/public/ru';
+    protected $path = 'https://m.rzd.ru/timetable/public/ru';
 
-    protected $suggestionPath = 'http://pass.rzd.ru/suggester';
+    protected $suggestionPath = 'https://m.rzd.ru/suggester';
 
     private $query;
 
@@ -31,8 +31,7 @@ class Api
     public function trainRoutes(array $params): string
     {
         $layer = [
-            'STRUCTURE_ID' => 735,
-            'layer_id'     => 5371,
+            'layer_id' => 5827,
         ];
 
         $routes = json_decode($this->query->send($this->path, $layer + $params));
@@ -50,8 +49,7 @@ class Api
     public function trainRoutesReturn(array $params): string
     {
         $layer = [
-            'STRUCTURE_ID' => 735,
-            'layer_id'     => 5371,
+            'layer_id' => 5827,
         ];
 
         $routes = json_decode($this->query->send($this->path, $layer + $params));
@@ -69,8 +67,7 @@ class Api
     public function trainCarriages(array $params): string
     {
         $layer = [
-            'STRUCTURE_ID' => 735,
-            'layer_id'     => 5373,
+            'layer_id' => 5764,
         ];
 
         $routes = json_decode($this->query->send($this->path, $layer + $params));
@@ -93,13 +90,14 @@ class Api
     {
         $layer = [
             'layer_id' => 5804,
+            'json'     => 'y',
         ];
 
-        $routes = json_decode($this->query->send($this->path, $layer + $params));
+        $routes = $this->query->send($this->path, $layer + $params);
 
         return json_encode([
-            'train' => $routes->Train,
-            'routes' => $routes->Routes,
+            'train' => $routes->GtExpress_Response->Train,
+            'routes' => $routes->GtExpress_Response->Routes,
         ]);
     }
 
@@ -112,21 +110,18 @@ class Api
      */
     public function stationCode(array $params): string
     {
-        $routes = json_decode($this->query->send($this->suggestionPath, $params, 'get'));
+        $routes = $this->query->send($this->suggestionPath, $params, 'get');
 
+        $stations = [];
 
-        var_dump($routes); exit;
-
-       /* $stations = [];
-
-        if ($routes->response && is_array($routes->response)) {
-            foreach ($routes->response as $station){
+        if ($routes && is_array($routes)) {
+            foreach ($routes as $station) {
                 if (mb_stristr($station->n, $params['stationNamePart'])) {
                     $stations[] = ['station' => $station->n,  'code' => $station->c];
                 }
             }
         }
 
-        return $stations;*/
+        return json_encode($stations);
     }
 }

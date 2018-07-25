@@ -29,10 +29,10 @@ class Query
      * @param  string $path   путь к сайту
      * @param  array  $params массив данных если необходимы параметры
      * @param  string $method метод отправки данных
-     * @return string         данные страницы в json формате
+     * @return mixed          данные страницы
      * @throws Exception
      */
-    public function send($path, array $params = [], $method = 'post'): string
+    public function send($path, array $params = [], $method = 'post')
     {
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
@@ -44,6 +44,10 @@ class Query
 
         if ($userAgent = $this->config->getUserAgent()) {
             $this->curl->setUserAgent($userAgent);
+        }
+
+        if ($referer = $this->config->getReferer()) {
+            $this->curl->setReferer($referer);
         }
 
         $this->curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
@@ -65,6 +69,8 @@ class Query
      */
     protected function run($path, array $params, $method): Curl
     {
+        $count = 0;
+
         do {
             if (! empty($cookies) && ! empty($session)){
                 foreach ($cookies as $key=>$value){
@@ -74,7 +80,6 @@ class Query
                 $params += ['rid' => $session];
             }
 
-            $this->setXmlDecoder();
             $this->curl->$method($path, $params);
 
             $response = $this->curl->getResponse();
@@ -83,10 +88,11 @@ class Query
                 throw new RuntimeException('Ошибка: Не удалось получить данные');
             }
 
-            var_dump($response); exit;
+            if ($this->isJson($response)) {
+                $response = json_decode($response);
+            }
 
-            $response = json_decode($response);
-            $result   = $response->result ?? $response->type ?? 'OK';
+            $result = $response->result ?? $response->type ?? 'OK';
 
             switch ($result) {
                 case 'RID':
@@ -108,7 +114,8 @@ class Query
                    throw new RuntimeException($response->message ?? 'Ошибка разбора XML');
             }
 
-        } while (true);
+            $count++;
+        } while ($count < 5);
 
         return $this->curl;
     }
@@ -132,22 +139,20 @@ class Query
     }
 
     /**
-     * Устанавливает декодер для XML
+     * Проверка является ли строка валидным json-объектом
      *
-     * @return void
+     * @param  string  $string проверяемая строка
+     * @return boolean         результат проверки
      */
-    private function setXmlDecoder()
+    protected function isJson($string): bool
     {
-        $xmlDecoder = function ($response) {
-            $xmlObj = @simplexml_load_string($response);
-            if ($xmlObj !== false) {
-                $response = json_encode($xmlObj);
-            }
+        if (! is_string($string)) {
+            return false;
+        }
 
-            return $response;
-        };
+        json_decode($string);
 
-        $this->curl->setXmlDecoder($xmlDecoder);
+        return json_last_error() === JSON_ERROR_NONE;
     }
 
     /**
@@ -157,6 +162,4 @@ class Query
     {
         $this->curl->close();
     }
-
-
 }
