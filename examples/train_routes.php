@@ -1,17 +1,7 @@
 <?php
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$config = new Rzd\Config();
-$config->setProxy([
-    'server' => '94.153.169.60',
-    'port'   => '8080',
-]);
-
-$config->setUserAgent('Mozilla 4');
-$config->setReferer('rzd.ru');
-
-
-$api = new Rzd\Api($config);
+$api = new Rzd\Api();
 
 $start = new DateTime();
 $date0 = $start->modify('+1 day');

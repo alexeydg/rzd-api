@@ -85,7 +85,7 @@ class Query
             $response = $this->curl->getResponse();
 
             if (empty($response) || ! empty($response->error)) {
-                throw new RuntimeException('Ошибка: Не удалось получить данные');
+                throw new RuntimeException('Не удалось получить данные!');
             }
 
             if ($this->isJson($response)) {
@@ -111,7 +111,7 @@ class Query
 
                 default:
                    $this->curl->close();
-                   throw new RuntimeException($response->message ?? 'Ошибка разбора XML');
+                   throw new RuntimeException($response->message ?? 'Не удалось получить данные!');
             }
 
             $count++;
@@ -135,7 +135,7 @@ class Query
             }
         }
 
-        throw new RuntimeException('Ошибка: Не найден уникальный ключ');
+        throw new RuntimeException('Не найден уникальный ключ!');
     }
 
     /**

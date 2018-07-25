@@ -16,7 +16,7 @@ class Config
      * @param string $username
      * @param string $password
      */
-    public function setAuth($username, $password)
+    public function setAuth($username, $password): void
     {
         $this->username = $username;
         $this->password = $password;
@@ -40,7 +40,7 @@ class Config
      *
      * @param array $params
      */
-    public function setProxy(array $params)
+    public function setProxy(array $params): void
     {
         $this->proxy = $params;
     }
@@ -65,7 +65,7 @@ class Config
      *
      * @param string $userAgent
      */
-    public function setUserAgent($userAgent)
+    public function setUserAgent($userAgent): void
     {
         $this->userAgent = $userAgent;
     }
@@ -75,7 +75,7 @@ class Config
      *
      * @return string
      */
-    public function getUserAgent(): string
+    public function getUserAgent():? string
     {
         return $this->userAgent;
     }
@@ -85,7 +85,7 @@ class Config
      *
      * @param string $referer
      */
-    public function setReferer($referer)
+    public function setReferer($referer): void
     {
         $this->referer = $referer;
     }
@@ -95,7 +95,7 @@ class Config
      *
      * @return string
      */
-    public function getReferer(): string
+    public function getReferer():? string
     {
         return $this->referer;
     }

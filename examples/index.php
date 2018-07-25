@@ -4,6 +4,25 @@
     Обращаем внимание на то, что по новым условиям RZD.RU дату отправки нужно указывать с учетом часового пояса станции отправления
 </div>
 
+<h3>В каждый запрос можно добавлять свои параметры</h3>
+
+<pre style="background: aliceblue; padding: 5px; border: 1px solid brown">
+// Добавляем прокси
+$config = new Rzd\Config();
+$config->setProxy([
+    'server' => '192.168.0.1',
+    'port'   => '8080',
+]);
+
+// Изменяем userAgent
+$config->setUserAgent('Mozilla 5');
+
+// Изменяем referer
+$config->setReferer('rzd.ru');
+
+$api = new Rzd\Api($config);
+</pre>
+
 <h3>Выбор маршрута в одну сторону</h3>
 <a href="/examples/train_routes.php">Просмотр</a><br>
 В примере выполняется поиск маршрута САНКТ-ПЕТЕРБУРГ - МОСКВА (только с билетами) на завтра
