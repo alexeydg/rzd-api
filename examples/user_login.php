@@ -1,28 +1,21 @@
 <?php
-require __DIR__ . '/../bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-$auth = new Rzd\Auth();
+$config = new Rzd\Config();
+$config->setAuth('username', 'password');
 
-// Проверка авторизации
-if (empty(USERNAME) || empty(PASSWORD)) {
+$auth = new Rzd\Auth($config);
 
+if ($auth->login()) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Пользователь успешно авторизован!'
+    ]);
+} else {
     echo json_encode([
         'success' => false,
-        'message' => 'Для авторизации необходим логин и пароль пользователя!'
+        'message' => 'Не удалось авторизоваться на сайте!'
     ]);
 
-} else {
-
-    if ($auth->login(USERNAME, PASSWORD)) {
-        echo json_encode([
-            'success' => true,
-            'message' => 'Пользователь '.USERNAME.' успешно авторизован!'
-        ]);
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Не удалось авторизоваться на сайте!'
-        ]);
-
-    }
 }
+

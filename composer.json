@@ -1,6 +1,7 @@
 {
     "name": "visavi/rzd-api",
     "description": "rzd api",
+    "keywords": ["rzd", "api", "train", "ticket"],
     "homepage": "http://visavi.net",
     "license": "MIT",
     "authors": [
@@ -12,7 +13,6 @@
     ],
     "require": {
         "php": ">=7.1",
-        "olamedia/nokogiri": "^1.0",
         "php-curl-class/php-curl-class": "dev-master"
     },
     "require-dev": {

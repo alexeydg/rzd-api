@@ -110,9 +110,12 @@ $stations = $api->stationCode($params);
 В примере выполняется авторизация на сайте rzd.ru, возвращает true и устанавливает куки если авторизация выполнена успешно
 
 <pre style="background: aliceblue; padding: 5px; border: 1px solid brown">
-$auth = new Rzd\Auth();
+$config = new Rzd\Config();
+$config->setAuth('username', 'password');
 
-$auth->login('логин', 'пароль');
+$auth = new Rzd\Auth($config);
+
+$auth->login();
 </pre>
 
 <h3>Просмотр профиля пользователя</h3>
@@ -122,23 +125,5 @@ $auth->login('логин', 'пароль');
 <pre style="background: aliceblue; padding: 5px; border: 1px solid brown">
 $auth = new Rzd\Auth();
 
-$dataProfile = $auth->getProfile();
-</pre>
-
-
-<h3>Изменение профиля пользователя</h3>
-<a href="/examples/user_update.php">Изменить</a><br>
-В примере выполняется обновление профиля пользователя
-
-<pre style="background: aliceblue; padding: 5px; border: 1px solid brown">
-$auth = new Rzd\Auth();
-
-$replaceData = [
-    'MIDDLE_NAME'      => 'Владимирович',
-    'ACCEPT_POST_FLAG' => 1,
-    'GENDER_ID'        => 2,
-    'QUESTION_ID'      => 1,
-];
-
-$auth->setProfile($replaceData);
+$profile = $auth->getProfile();
 </pre>

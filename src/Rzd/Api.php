@@ -6,12 +6,31 @@ use Exception;
 
 class Api
 {
+    /**
+     * Страница получения данных
+     *
+     * @var string
+     */
     protected $path = 'https://m.rzd.ru/timetable/public/ru';
 
+    /**
+     * Страница списка кодов станции
+     *
+     * @var string
+     */
     protected $suggestionPath = 'https://m.rzd.ru/suggester';
 
+    /**
+     * @var Query
+     */
     private $query;
 
+    /**
+     * Api constructor.
+     *
+     * @param Config|null $config
+     * @throws Exception
+     */
     public function __construct(Config $config = null)
     {
         if (! $config) {
@@ -34,7 +53,7 @@ class Api
             'layer_id' => 5827,
         ];
 
-        $routes = json_decode($this->query->send($this->path, $layer + $params));
+        $routes = json_decode($this->query->get($this->path, $layer + $params));
 
         return json_encode($routes->tp[0]->list);
     }
@@ -52,7 +71,7 @@ class Api
             'layer_id' => 5827,
         ];
 
-        $routes = json_decode($this->query->send($this->path, $layer + $params));
+        $routes = json_decode($this->query->get($this->path, $layer + $params));
 
         return json_encode([$routes->tp[0]->list, $routes->tp[1]->list]);
     }
@@ -70,7 +89,7 @@ class Api
             'layer_id' => 5764,
         ];
 
-        $routes = json_decode($this->query->send($this->path, $layer + $params));
+        $routes = json_decode($this->query->get($this->path, $layer + $params));
 
         return json_encode([
             'cars'      => $routes->lst[0]->cars,
@@ -93,7 +112,7 @@ class Api
             'json'     => 'y',
         ];
 
-        $routes = $this->query->send($this->path, $layer + $params);
+        $routes = $this->query->get($this->path, $layer + $params);
 
         return json_encode([
             'train' => $routes->GtExpress_Response->Train,
@@ -110,7 +129,7 @@ class Api
      */
     public function stationCode(array $params): string
     {
-        $routes = $this->query->send($this->suggestionPath, $params, 'get');
+        $routes = $this->query->get($this->suggestionPath, $params, 'get');
 
         $stations = [];
 

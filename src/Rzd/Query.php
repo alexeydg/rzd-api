@@ -8,7 +8,14 @@ use RuntimeException;
 
 class Query
 {
+    /**
+     * @var Config
+     */
     private $config;
+
+    /**
+     * @var Curl
+     */
     private $curl;
 
     /**
@@ -24,15 +31,29 @@ class Query
     }
 
     /**
-     * Отправка и получение данных
+     * Получает данные
      *
      * @param  string $path   путь к сайту
      * @param  array  $params массив данных если необходимы параметры
      * @param  string $method метод отправки данных
-     * @return mixed          данные страницы
+     * @return mixed
      * @throws Exception
      */
-    public function send($path, array $params = [], $method = 'post')
+    public function get($path, array $params = [], $method = 'post')
+    {
+        return $this->send($path, $params, $method)->getResponse();
+    }
+
+    /**
+     * Отправляет запрос
+     *
+     * @param  string $path   путь к сайту
+     * @param  array  $params массив данных если необходимы параметры
+     * @param  string $method метод отправки данных
+     * @return Curl
+     * @throws Exception
+     */
+    public function send($path, array $params = [], $method = 'post'): Curl
     {
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
@@ -55,7 +76,7 @@ class Query
         $this->curl->setCookieJar($cookieFile);
         $this->run($path, $params, $method);
 
-        return $this->curl->getResponse();
+        return $this->curl;
     }
 
     /**
@@ -69,8 +90,6 @@ class Query
      */
     protected function run($path, array $params, $method): Curl
     {
-        $count = 0;
-
         do {
             if (! empty($cookies) && ! empty($session)){
                 foreach ($cookies as $key=>$value){
@@ -114,8 +133,7 @@ class Query
                    throw new RuntimeException($response->message ?? 'Не удалось получить данные!');
             }
 
-            $count++;
-        } while ($count < 5);
+        } while (true);
 
         return $this->curl;
     }
@@ -139,7 +157,7 @@ class Query
     }
 
     /**
-     * Проверка является ли строка валидным json-объектом
+     * Проверяет является ли строка валидным json-объектом
      *
      * @param  string  $string проверяемая строка
      * @return boolean         результат проверки

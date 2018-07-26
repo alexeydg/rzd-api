@@ -4,10 +4,29 @@ namespace Rzd;
 
 class Config
 {
+    /**
+     * @var string
+     */
     private $username;
+
+    /**
+     * @var string
+     */
     private $password;
+
+    /**
+     * @var array
+     */
     private $proxy;
+
+    /**
+     * @var string
+     */
     private $userAgent;
+
+    /**
+     * @var string
+     */
     private $referer;
 
     /**
@@ -30,8 +49,8 @@ class Config
     public function getAuth(): array
     {
         return [
-            'username' => $this->username,
-            'password' => $this->password,
+            'j_username' => $this->username,
+            'j_password' => $this->password,
         ];
     }
 
