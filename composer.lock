@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a078721525f4fa1caddaa273117cdd3",
+    "content-hash": "6a8cf37ed1840ed03343a2b7403903c1",
     "packages": [
         {
             "name": "php-curl-class/php-curl-class",
-            "version": "dev-master",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "01d9955e6dfcc0df65fd8a1cbbc16119718e4ba4"
+                "reference": "0090c30b4348028cabf1d03427423460ca7dc4a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/01d9955e6dfcc0df65fd8a1cbbc16119718e4ba4",
-                "reference": "01d9955e6dfcc0df65fd8a1cbbc16119718e4ba4",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/0090c30b4348028cabf1d03427423460ca7dc4a4",
+                "reference": "0090c30b4348028cabf1d03427423460ca7dc4a4",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "web service",
                 "xml"
             ],
-            "time": "2018-07-23T04:41:43+00:00"
+            "time": "2018-06-06T05:01:44+00:00"
         }
     ],
     "packages-dev": [
@@ -1475,9 +1475,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "php-curl-class/php-curl-class": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

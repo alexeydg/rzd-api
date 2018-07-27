@@ -41,7 +41,7 @@ class Query
      */
     public function get($path, array $params = [], $method = 'post')
     {
-        return $this->send($path, $params, $method)->getResponse();
+        return $this->send($path, $params, $method)->response;
     }
 
     /**
@@ -58,9 +58,18 @@ class Query
         $cookieFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'rzd_cookie';
 
         $proxy = $this->config->getProxy();
+
         if ($proxy['server']) {
-            $this->curl->setProxy($proxy['server'], $proxy['port'], $proxy['username'], $proxy['password']);
-            $this->curl->setProxyTunnel();
+            $this->curl->setOpt(CURLOPT_PROXY, $proxy['server']);
+            $this->curl->setOpt(CURLOPT_HTTPPROXYTUNNEL, true);
+        }
+
+        if ($proxy['port']) {
+            $this->curl->setOpt(CURLOPT_PROXYPORT, $proxy['port']);
+        }
+
+        if ($proxy['username'] && $proxy['password']) {
+            $this->curl->setOpt(CURLOPT_PROXYUSERPWD, $proxy['username'] . ':' . $proxy['password']);
         }
 
         if ($userAgent = $this->config->getUserAgent()) {
@@ -101,7 +110,7 @@ class Query
 
             $this->curl->$method($path, $params);
 
-            $response = $this->curl->getResponse();
+            $response = $this->curl->response;
 
             if (empty($response) || ! empty($response->error)) {
                 throw new RuntimeException('Не удалось получить данные!');
