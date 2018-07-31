@@ -133,7 +133,7 @@ class Api
 
         $stations = [];
 
-        if ($routes && is_array($routes)) {
+        if ($routes && \is_array($routes)) {
             foreach ($routes as $station) {
                 if (mb_stristr($station->n, $params['stationNamePart'])) {
                     $stations[] = ['station' => $station->n,  'code' => $station->c];

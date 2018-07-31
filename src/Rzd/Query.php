@@ -173,7 +173,7 @@ class Query
      */
     protected function isJson($string): bool
     {
-        if (! is_string($string)) {
+        if (! \is_string($string)) {
             return false;
         }
 
