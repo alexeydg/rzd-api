@@ -11,7 +11,7 @@ class Api
      *
      * @var string
      */
-    protected $path = 'https://m.rzd.ru/timetable/public';
+    protected $path = 'https://pass.rzd.ru/timetable/public';
 
     /**
      * Страница списка кодов станции
