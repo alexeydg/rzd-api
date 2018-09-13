@@ -11,7 +11,7 @@ class Api
      *
      * @var string
      */
-    protected $path = 'https://m.rzd.ru/timetable/public/ru';
+    protected $path = 'https://m.rzd.ru/timetable/public';
 
     /**
      * Страница списка кодов станции
@@ -29,14 +29,17 @@ class Api
      * Api constructor.
      *
      * @param Config|null $config
+	 * @param String|'ru' $lang
      * @throws Exception
      */
-    public function __construct(Config $config = null)
+    public function __construct(Config $config = null, $lang = 'ru')
     {
         if (! $config) {
             $config = new Config();
         }
-
+		
+		$this->path .= '/'.$lang;
+		
         $this->query = new Query($config);
     }
 
@@ -92,10 +95,10 @@ class Api
         $routes = json_decode($this->query->get($this->path, $layer + $params));
 
         return json_encode([
-            'cars'           => $routes->lst[0]->cars,
-            'functionBlocks' => $routes->lst[0]->functionBlocks,
-            'schemes'        => $routes->schemes,
-            'companies'      => $routes->insuranceCompany,
+            'cars'           => $routes->lst[0]->cars ?? null,
+            'functionBlocks' => $routes->lst[0]->functionBlocks ?? null,
+            'schemes'        => $routes->schemes ?? null,
+            'companies'      => $routes->insuranceCompany ?? null,
         ]);
     }
 
