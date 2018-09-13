@@ -1,5 +1,5 @@
 {
-    "name": "visavi/rzd-api",
+    "name": "alexeydg/rzd-api",
     "description": "rzd api",
     "keywords": ["rzd", "api", "train", "ticket"],
     "homepage": "http://visavi.net",
@@ -9,6 +9,11 @@
             "name": "Alexander Grigorev",
             "email": "admin@visavi.net",
             "homepage": "http://visavi.net"
+        },
+		{
+            "name": "Alexey DG",
+            "email": "alexeydg@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
